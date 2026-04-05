@@ -1,8 +1,31 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { X, Sparkles, Mic, MicOff, Send, BadgeCheck, Loader2, Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
+import { X, Sparkles, Mic, MicOff, Send, BadgeCheck, Loader2, Volume2, VolumeX, Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+// ─── Text-to-Speech helper ───────────────────────────────────────────────────
+function speak(text, onEnd) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const clean = text
+    .replace(/📄\s*Sources:.*/gs, '')
+    .replace(/🎯\s*Confidence:.*/g, '')
+    .replace(/[*_`#|]/g, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+  const utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'en-US';
+  utter.rate = 1.0;
+  utter.pitch = 1.0;
+  const voices = window.speechSynthesis.getVoices();
+  const preferred =
+    voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Neural'))) ||
+    voices.find(v => v.lang.startsWith('en'));
+  if (preferred) utter.voice = preferred;
+  if (onEnd) utter.onend = onEnd;
+  window.speechSynthesis.speak(utter);
+}
 
 // ─── Native MediaRecorder hook ────────────────────────────────────────────
 function useMicRecorder({ onTranscript, onError }) {
@@ -104,6 +127,8 @@ function App() {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [ttsEnabled, setTtsEnabled] = useState(true);
+  const [speakingIdx, setSpeakingIdx] = useState(null);
   const [micError, setMicError] = useState('');
   const [micStatus, setMicStatus] = useState('idle'); // idle | recording | transcribing
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -115,6 +140,11 @@ function App() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
+  // Load TTS voices (Chrome loads them async)
+  useEffect(() => {
+    window.speechSynthesis?.getVoices();
+    window.speechSynthesis?.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices());
+  }, []);
 
   // ── Send message ──────────────────────────────────────────────────────────
   const handleSend = useCallback(async (textOverride) => {
@@ -175,6 +205,12 @@ function App() {
                   return arr;
                 });
 
+                // Do TTS immediately if enabled
+                if (ttsEnabled) {
+                  const botIdx = messages.length; // Approximate, but handleSpeakMsg uses correct index matching
+                  setSpeakingIdx(botIdx);
+                  speak(assistantMessage, () => setSpeakingIdx(null));
+                }
               } else if (data.type === 'error') {
                 assistantMessage = data.text;
                 setMessages(prev => {
@@ -235,6 +271,16 @@ function App() {
     }
   };
 
+  // ── Per-message TTS ───────────────────────────────────────────────────────
+  const handleSpeakMsg = (idx, content) => {
+    if (speakingIdx === idx) {
+      window.speechSynthesis?.cancel();
+      setSpeakingIdx(null);
+    } else {
+      setSpeakingIdx(idx);
+      speak(content, () => setSpeakingIdx(null));
+    }
+  };
 
   const micLabel = micStatus === 'recording' ? 'Tap to stop' : micStatus === 'transcribing' ? 'Transcribing…' : 'Speak';
 
@@ -417,6 +463,13 @@ function App() {
                 <Sparkles size={16} /> Galaxy AI
               </span>
               <div className="header-controls">
+                <button
+                  className={`tts-toggle ${ttsEnabled ? 'tts-on' : 'tts-off'}`}
+                  onClick={() => { window.speechSynthesis?.cancel(); setSpeakingIdx(null); setTtsEnabled(v => !v); }}
+                  title={ttsEnabled ? 'Mute voice responses' : 'Enable voice responses'}
+                >
+                  {ttsEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
+                </button>
                 <button className="header-icon" onClick={() => setIsChatOpen(false)}>
                   <X size={20} />
                 </button>
@@ -434,10 +487,17 @@ function App() {
                   ) : (
                     <div className="msg-bot-container">
                       <div className="bot-header">
-                        <div className="sparkle-icon">
+                        <div className={`sparkle-icon ${speakingIdx === idx ? 'speaking-pulse' : ''}`}>
                           <Sparkles size={14} />
                         </div>
                         <span>GALAXY AI</span>
+                        <button
+                          className={`msg-speak-btn ${speakingIdx === idx ? 'active' : ''}`}
+                          onClick={() => handleSpeakMsg(idx, msg.content)}
+                          title={speakingIdx === idx ? 'Stop' : 'Read aloud'}
+                        >
+                          {speakingIdx === idx ? <VolumeX size={13} /> : <Volume2 size={13} />}
+                        </button>
                       </div>
                       <div className="bot-card">
                         {msg.isIntro && <div className="bot-card-title">Welcome to Galaxy Support</div>}
