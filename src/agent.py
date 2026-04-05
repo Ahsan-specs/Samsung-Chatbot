@@ -204,8 +204,8 @@ Intent:"""
                             break
                 
                 # RELEVANCE CHECK: If still not relevant, ask for web search permission
-                if not is_relevant:
-                    yield {"type": "chunk", "text": "I couldn't find that specific information in the local Samsung manuals. Would you like me to conduct a web search to find more details?"}
+                if not is_relevant or not retrieved_context.strip():
+                    yield {"type": "chunk", "text": "I couldn't find that specific information in our local Samsung manuals. Would you like me to conduct a web search on samsung.com to find more details?"}
                     return
 
         elif intent == "CATEGORY_BROWSE":
