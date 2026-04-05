@@ -1,0 +1,32 @@
+{
+    "url": "https://www.samsung.com/pk/watches/galaxy-watch/galaxy-watch8-classic-46mm-white-bluetooth-sm-l500nzwamea/",
+    "title": "Galaxy Watch8 Classic 46Mm White Bluetooth Sm L500Nzwamea",
+    "category": "Watches",
+    "features": [],
+    "specifications": {
+        "Size (Main Display)": "1.3\" (34mm)",
+        "Body Weight (g)": "63.5",
+        "Bluetooth Version": "Bluetooth v5.3",
+        "Sensors": "Accelerometer, Barometer, Bioelectrical Impedance Analysis Sensor, Electrical Heart Sensor, Gyro Sensor, Geomagnetic Sensor, Hall Sensor, Infrared Temperature Sensor, Light Sensor, Optical Heart Rate Sensor",
+        "Storage (GB)": "64",
+        "CPU Speed": "1.6GHz, 1.5GHz",
+        "NFC": "Yes",
+        "Body Dimension (HxWxD, mm)": "46.0 x 46.4 x 10.6",
+        "Infra": "Wi-Fi only, Bluetooth Only",
+        "Audio Playing Format": "MP3, M4A, 3GA, AAC, OGG, OGA, WAV, AMR, AWB",
+        "Location Technology": "GPS, Glonass, Beidou, Galileo",
+        "Wi-Fi": "802.11a/b/g/n 2.4GHz+5GHz",
+        "Bluetooth Profiles": "A2DP, AVRCP, HFP, HSP",
+        "Technology (Main Display)": "Super AMOLED",
+        "Resolution (Main Display)": "438 x 438",
+        "Color Depth (Main Display)": "16M",
+        "CPU Type": "Penta-Core",
+        "Memory (GB)": "2",
+        "Available Storage (GB)": "49.0",
+        "Durability": "5 ATM",
+        "Battery Capacity (mAh, Typical)": "445",
+        "Removable": "No",
+        "Usage Time (Hours, AOD Off)": "Up to 40",
+        "Usage Time (Hours, AOD On)": "Up to 30"
+    }
+}

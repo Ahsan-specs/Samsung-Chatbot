@@ -1,0 +1,15 @@
+{
+    "url": "https://www.samsung.com/pk/monitors/monitor-buying-guide/how-to-select-by-resolution/",
+    "title": "How To Select By Resolution",
+    "category": "Monitors",
+    "features": [],
+    "specifications": {
+        "FHD (1920x1080)": "Affordable and widely availableGreat for low- to mid-range gaming setupsIdeal for general productivity without high performance demands",
+        "QHD (2560x1440)": "Great balance between image quality and performanceExcellent for gaming, multitasking, and moderate creative workProvides more screen space for productivity tasks",
+        "4K UHD (3840x2160)": "Perfect for high-end gaming with detailed, immersive visualsEssential for creative professionals needing precise pixel densityIdeal for video editing and content creation in 4K resolution",
+        "5K (5120x2880)": "Best for professionals who need extremely high pixel density and color accuracyExcellent for handling high-resolution video and detailed graphics workAllows space for editing tools alongside 4K content",
+        "Ultra WQHD (3440x1440)": "Offers a broader field of view, making it ideal for gaming genres like racing, simulation, and first-person shooters.Great for watching movies or content in a cinematic format without black bars, thanks to its 21:9 aspect ratio.Perfect for creative professionals who need extra horizontal space for multitasking, timelines, design tools, or multiple layers in editing software.",
+        "Dual QHD (5120x1440)": "Effectively replaces two 1440p monitors side by side, offering a seamless workspace for multitasking without the bezel gap.Provides an ultra-wide, immersive gaming experience with an extended peripheral view, enhancing situational awareness in games.Excellent for content creators, financial analysts, and designers who need vast screen real estate for complex workflows like editing, financial modeling, or CAD applications.",
+        "Dual UHD (7680x2160)": "Offers the equivalent of two 4K monitors, making it the ultimate wide screen without breaks between the screen or bevelsIdeal for professionals working with ultra high-resolution content, ensuring every pixel is visible and every detail is crisp.Provides a massive, immersive view for gaming, as well as the ability to handle multiple high-resolution applications simultaneously without needing additional monitors."
+    }
+}

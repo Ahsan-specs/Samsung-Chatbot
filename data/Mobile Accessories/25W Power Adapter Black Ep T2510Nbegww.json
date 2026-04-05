@@ -1,0 +1,30 @@
+{
+    "url": "https://www.samsung.com/pk/mobile-accessories/25w-power-adapter-black-ep-t2510nbegww/",
+    "title": "25W Power Adapter Black Ep T2510Nbegww",
+    "category": "Mobile Accessories",
+    "features": [
+        "Powerfully refined",
+        "The new Power Adapter boosts your workstation with up to 25W Super Fast Charging for devices compatible with USB Type-C cables.",
+        "Compact yet powerful",
+        "They're getting smaller and smaller. Your Power Adapter, available in Black and White, is now slimmer and more travel-friendly than its predecessor, thanks to GaN Tech.",
+        "Save on the stand-by",
+        "Not always full-throttle. The Power Adapter minimizes your standby power from 20mW to 5mW, maximizing your energy savings up to 75%. It's also made from a blend of materials that are mindful of the planet, which keeps us attentive in more ways.",
+        "As safe as is fast",
+        "Nothing's more important. Stay safe from overcurrent, short circuits and high-temperature, low leakages and more.",
+        "Compatible with Type-C",
+        "Throw it in inside your bag of devices. Up to 25W charging for the workstation and your fleet of Type-C compatible devices, not to mention your Galaxy Family."
+    ],
+    "specifications": {
+        "Compatible Models": "Super Fast Charging 25W compatible with Galaxy S10 5G, A80, A70, and future compatible devices",
+        "Features": "Super Fast Charging max. 25W, PD 3.0 PPS max. 25W, Zero Standby Power Consumption( <5mW)",
+        "Interface": "USB Type-C",
+        "Packaging Contents": "Wall Charger, Leaflet",
+        "Dimension (WxHxD)": "38.0 x 66.9 x 22.0 mm",
+        "Weight": "51.6 g",
+        "Input Voltage": "100-240 V",
+        "Output Voltage (Max, Normal Charge)": "5 V",
+        "Output Voltage (Max, Fast Charge)": "PDO : 9 V / PPS : 3.3-5.9 V or 3.3-11.0 V",
+        "Output Current (Max, Normal Charge)": "3 A",
+        "Output Current (Max, Fast Charge)": "PDO : 2.77 A(9 V) / PPS : 3.0 A(3.3-5.9 V) or 2.25 A(3.3-11.0 V)"
+    }
+}

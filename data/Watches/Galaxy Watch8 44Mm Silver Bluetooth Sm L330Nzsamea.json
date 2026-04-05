@@ -1,0 +1,31 @@
+{
+    "url": "https://www.samsung.com/pk/watches/galaxy-watch/galaxy-watch8-44mm-silver-bluetooth-sm-l330nzsamea/",
+    "title": "Galaxy Watch8 44Mm Silver Bluetooth Sm L330Nzsamea",
+    "category": "Watches",
+    "features": [],
+    "specifications": {
+        "Size (Main Display)": "1.5\" (37.3mm)",
+        "Body Weight (g)": "34.0",
+        "Bluetooth Version": "Bluetooth v5.3",
+        "Sensors": "Accelerometer, Barometer, Bioelectrical Impedance Analysis Sensor, Electrical Heart Sensor, Gyro Sensor, Geomagnetic Sensor, Infrared Temperature Sensor, Light Sensor, Optical Heart Rate Sensor",
+        "Storage (GB)": "32",
+        "CPU Speed": "1.6GHz, 1.5GHz",
+        "NFC": "Yes",
+        "Body Dimension (HxWxD, mm)": "46.0 x 43.7 x 8.6",
+        "Infra": "Wi-Fi only, Bluetooth Only",
+        "Audio Playing Format": "MP3, M4A, 3GA, AAC, OGG, OGA, WAV, AMR, AWB",
+        "Location Technology": "GPS, Glonass, Beidou, Galileo",
+        "Wi-Fi": "802.11a/b/g/n 2.4GHz+5GHz",
+        "Bluetooth Profiles": "A2DP, AVRCP, HFP, HSP",
+        "Technology (Main Display)": "Super AMOLED",
+        "Resolution (Main Display)": "480 x 480",
+        "Color Depth (Main Display)": "16M",
+        "CPU Type": "Penta-Core",
+        "Memory (GB)": "2",
+        "Available Storage (GB)": "20.2",
+        "Durability": "5 ATM",
+        "Battery Capacity (mAh, Typical)": "435",
+        "Removable": "No",
+        "Usage Time (Hours, AOD Off)": "Up to 40"
+    }
+}
