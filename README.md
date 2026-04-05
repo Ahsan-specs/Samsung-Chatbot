@@ -9,7 +9,7 @@ A premium, high-end AI Support interface designed strictly according to the **Sa
   - **Hybrid Retrieval**: Combines FAISS vector search with GraphRAG (NetworkX) for deep context understanding.
   - **Smart Web Fallback**: Proactively asks for permission to search the web (via DuckDuckGo) when local manuals are insufficient, restricted strictly to `samsung.com`.
 - **High Performance**: Powered by the **Cerebras Llama-3.1-8b** model for sub-second inference speeds.
-- **Multi-modal Support**: Integrated Voice-to-Text (STT) and Text-to-Speech (TTS) for a hands-free experience.
+- **Multi-modal Support**: Integrated Voice-to-Text (STT) for a hands-free experience.
 - **Grounding & Guardrails**: Strict rules to prevent hallucinations, pricing inaccuracies, and out-of-scope queries (Samsung products only).
 
 ## 🛠️ Technology Stack
