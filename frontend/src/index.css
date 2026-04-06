@@ -1,18 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap');
 
 :root {
-  --primary: #2d4bd2;
-  --primary-hover: #1e3bb3;
-  --danger: #ef4444;
-  --bg-color: #08080a;
-  --card-bg: #121214;
-  --text-dark: #ffffff;
-  --text-gray: #a1a1aa;
-  --pill-bg: rgba(255, 255, 255, 0.05);
-  --pill-border: rgba(255, 255, 255, 0.1);
-  --ai-pill-bg: rgba(45, 75, 210, 0.1);
-  --ai-pill-border: rgba(45, 75, 210, 0.2);
-  --ai-pill-text: #60a5fa;
+  --primary: #1428A0;
+  --primary-glow: rgba(20, 40, 160, 0.4);
+  --ai-sparkle: linear-gradient(135deg, #1428A0 0%, #7b1fa2 100%);
+  --bg-dark: #000000;
+  --bg-card: #ffffff;
+  --text-white: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --galaxy-gradient: linear-gradient(180deg, #020202 0%, #0c0c1e 100%);
 }
 
 /* ── Reset ──────────────────────────────────────────────────────────────── */
@@ -26,9 +24,32 @@
 
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-dark);
+  background-color: var(--bg-dark);
+  color: var(--text-white);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Reveal Animations ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.reveal-item {
+  opacity: 0;
+  transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-item.active {
+  opacity: 1;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ── Landing Page Styles ─────────────────────────────────────────────────── */
@@ -119,13 +140,13 @@ body {
   right: 0;
   width: 65%;
   height: 100%;
-  background-image: url('/images/s25_hero.png');
+  background-image: url('/images/s26_hero.png');
   background-size: cover;
-  background-position: center;
+  background-position: right top;
   background-repeat: no-repeat;
-  opacity: 0.85;
-  mask-image: linear-gradient(to left, black 60%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to left, black 60%, transparent 100%);
+  opacity: 1;
+  mask-image: linear-gradient(to left, black 40%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%);
 }
 
 .hero-content {
@@ -149,12 +170,16 @@ body {
 
 .hero-title {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-size: clamp(3.5rem, 8vw, 6rem);
   font-weight: 800;
-  line-height: 1;
+  line-height: 0.95;
   color: #fff;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.04em;
+  margin-bottom: 2rem;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .hero-subtitle {
@@ -318,8 +343,10 @@ body {
 
 /* ── Secondary Promo ── */
 .secondary-promo {
-  height: 60vh;
-  background: linear-gradient(135deg, #0f172a, #1428A0);
+  height: 70vh;
+  background: url('/images/s26_store.png');
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -327,6 +354,17 @@ body {
   padding: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.secondary-promo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
 }
 
 .secondary-promo::after {
@@ -495,29 +533,47 @@ body {
 /* ── Chat Widget Floating Button ─────────────────────────────────────────── */
 .chat-fab {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 30px;
+  right: 30px;
   height: 64px;
-  padding: 0 1.5rem;
-  background: #1428A0;
+  padding: 0 1.8rem;
+  background: var(--ai-sparkle);
   color: white;
   border: none;
   border-radius: 32px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-weight: 600;
-  font-size: 1.05rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(20, 40, 160, 0.4);
-  z-index: 100;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 8px 32px rgba(20, 40, 160, 0.4), 0 0 15px rgba(123, 31, 162, 0.3);
+  z-index: 1000;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: fabPulse 3s infinite;
 }
 
 .chat-fab:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(20, 40, 160, 0.5);
-  background: #0d1e82;
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 15px 45px rgba(20, 40, 160, 0.6), 0 0 25px rgba(123, 31, 162, 0.4);
+  letter-spacing: 0.02em;
+}
+
+@keyframes fabPulse {
+  0% {
+    box-shadow: 0 8px 32px rgba(20, 40, 160, 0.4), 0 0 0 0 rgba(123, 31, 162, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 8px 32px rgba(20, 40, 160, 0.5), 0 0 0 15px rgba(123, 31, 162, 0);
+  }
+
+  100% {
+    box-shadow: 0 8px 32px rgba(20, 40, 160, 0.4), 0 0 0 0 rgba(123, 31, 162, 0);
+  }
 }
 
 .fab-icon-container {
@@ -550,17 +606,17 @@ body {
   height: 700px;
   max-height: calc(100vh - 120px);
   z-index: 100;
-  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: elasticSlideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   border-radius: 2rem;
   overflow: hidden;
   background: #ffffff;
 }
 
-@keyframes slideUp {
+@keyframes elasticSlideUp {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
+    transform: translateY(100px) scale(0.9);
   }
 
   to {
@@ -584,12 +640,14 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 1.2rem 1.5rem;
-  background-color: #1428A0;
+  background-color: var(--primary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: white;
   font-weight: 700;
   font-size: 1.1rem;
   z-index: 10;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header-brand {
@@ -659,7 +717,8 @@ body {
 .chat-area {
   flex: 1;
   overflow-y: auto;
-  padding: 1.5rem 1.5rem 7rem;
+  padding: 1.5rem 1.5rem 9rem;
+  /* Increased to avoid overlapping with quick actions */
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
@@ -691,16 +750,29 @@ body {
 }
 
 .msg-user {
-  background-color: #1428A0;
-  color: #fff;
-  padding: 0.9rem 1.3rem;
-  border-radius: 1.4rem;
-  border-bottom-right-radius: 0.3rem;
+  background: var(--user-bg);
+  color: #121111;
+  padding: 1rem 1.4rem;
+  border-radius: 1.6rem;
+  border-bottom-right-radius: 0.4rem;
   max-width: 85%;
   font-size: 0.95rem;
   line-height: 1.4;
   box-shadow: 0 10px 25px rgba(20, 40, 160, 0.15);
   font-weight: 500;
+  animation: userReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes userReveal {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .msg-bot-container {
@@ -762,13 +834,44 @@ body {
 
 .bot-card {
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 1.5rem;
+  border: 1px solid rgba(20, 40, 160, 0.08);
+  border-radius: 1.8rem;
   padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 10px 35px rgba(20, 40, 160, 0.05);
   position: relative;
   overflow: hidden;
   color: #1f2937;
+  transition: all 0.3s ease;
+  animation: messageReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes messageReveal {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.bot-card.loading-card {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border: none;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .bot-card::before {
@@ -813,11 +916,20 @@ body {
 
 .bot-card-text table {
   width: 100%;
+  min-width: 500px;
+  /* Ensures scrollbar appears for complex tables */
   border-collapse: collapse;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   background: #f8fafc;
+}
+
+.table-wrapper {
+  overflow-x: auto;
   border-radius: 0.8rem;
-  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin: 1.5rem 0;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bot-card-text th,
@@ -825,12 +937,16 @@ body {
   padding: 0.8rem;
   border: 1px solid rgba(0, 0, 0, 0.05);
   text-align: left;
+  word-break: break-word;
+  /* Allow long model strings to wrap if possible */
+  min-width: 120px;
 }
 
 .bot-card-text th {
   background: #f1f5f9;
   color: #111827;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 /* ── Input Area ──────────────────────────────────────────────────────────── */
@@ -939,10 +1055,11 @@ body {
 }
 
 .action-pill:hover {
-  background: #1428A0;
+  background: var(--ai-sparkle);
   color: #ffffff;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(20, 40, 160, 0.15);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(20, 40, 160, 0.2);
+  border-color: transparent;
 }
 
 .action-pill:active {
@@ -969,7 +1086,9 @@ body {
   left: 0;
   right: 0;
   padding: 1.2rem 1.5rem;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   z-index: 10;
   /* Ensure input is always on top */

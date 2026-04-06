@@ -2,16 +2,20 @@
 __pycache__/
 *.py[cod]
 *$py.class
-venv*/
+venv/
+venv_mac/
 .env
 
-# React / Node
+# Large Files
+*.sqlite
+*.db
+data/processed/
+data/raw_pdfs/
+
+# Node
 node_modules/
 dist/
-.DS_Store
+.env.local
 
-# Local Storage
-storage.sqlite
-server.log
-debug_audio.webm
-frontend/dist/
+# OS
+.DS_Store

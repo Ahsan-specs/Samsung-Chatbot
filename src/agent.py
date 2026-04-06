@@ -30,11 +30,11 @@ class SupportAgent:
     2. NO SUBSTITUTION: Do not provide specs for a similar model if the user asked for a different one.
     3. PROFESSIONAL STYLE: Avoid all fluff, introductory filler, and emojis.
     4. STRUCTURE: Use clean Markdown tables for comparisons and bullet points for specifications.
-    5. CITATION: List sources clearly: "Sources: [Official Catalog or samsung.com URL]".
-    6. NO METADATA: Do not include confidence scores or internal labels in the response.
-    7. WEB SEARCH: If confirmed, use ONLY Official Samsung Web Results (samsung.com) to answer. ABSOLUTELY NO non-Samsung sites.
-    8. NO PRICING: If price is not in the context, state "Official pricing not available in this manual."
-    9. NO TECH NOTES: DO NOT include any "Note:..." or explanations about retrieved context. Follow rules 1-8 strictly. """
+    5. NO METADATA: Do not include confidence scores, source citations, or internal labels in the response.
+    6. WEB SEARCH: If confirmed, use ONLY Official Samsung Web Results (samsung.com) to answer. ABSOLUTELY NO non-Samsung sites.
+    7. NO PRICING: If price is not in the context, state "Official pricing not available in this manual."
+    8. NO TECH NOTES: DO NOT include any "Note:...", explanations about context, or metadata labels like "Product Name:" and "Category:".
+    9. NO HEADERS: Never include headers like "======= PRODUCT COMPARISON =======" or "RETRIEVED CONTEXT". Follow rules 1-9 strictly. """
 
     INTENT_PROMPT = """Classify the user's intent into exactly ONE of these categories:
 - PRODUCT_INFO: User wants specifications, features, or details about a Samsung product
@@ -48,6 +48,15 @@ class SupportAgent:
 
 Query: {query}
 Intent:"""
+
+    REWRITE_PROMPT = """Given the chat history and the user's latest message, rewrite it as a standalone, descriptive search query optimized for a Samsung product support knowledge base.
+Exclude all conversational filler (e.g., "thanks", "ok", "please"). Focus ONLY on the core product names and technical keywords.
+
+Conversation History:
+{history}
+
+Latest Message: {query}
+Standalone Search Query:"""
 
     def __init__(self, api_key: str = None, retriever: HybridRetriever = None):
         self.api_key = api_key or os.environ.get("CEREBRAS_API_KEY")
@@ -87,6 +96,32 @@ Intent:"""
             return "PRODUCT_INFO"
         except Exception:
             return "PRODUCT_INFO"
+
+    def rewrite_query(self, query: str, chat_history: list) -> str:
+        """Contextualizes user query using history for better RAG retrieval."""
+        # Only rewrite if history exists and query is short/ambiguous
+        if not chat_history or len(query.split()) > 8:
+            return query
+
+        history_str = ""
+        for m in chat_history[-3:]: # Last 3 turns for context
+            history_str += f"{m['role'].upper()}: {m['content'][:200]}\n"
+
+        try:
+            response = self.client.chat.completions.create(
+                model="llama3.1-8b",
+                messages=[
+                    {"role": "system", "content": self.REWRITE_PROMPT.format(history=history_str, query=query)},
+                ],
+                max_tokens=50,
+                temperature=0.1,
+            )
+            rewritten = response.choices[0].message.content.strip()
+            # Clean up potential LLM prefixing
+            rewritten = re.sub(r'^(Standalone Query:|Query:|Search Query:)\s*', '', rewritten, flags=re.I)
+            return rewritten
+        except Exception:
+            return query
 
     def _web_search(self, query: str) -> str:
         """Simple web search fallback using DuckDuckGo."""
@@ -163,19 +198,24 @@ Intent:"""
             # No retrieval needed for greetings
             tool_used = "greeting_handler"
         elif intent == "OUT_OF_SCOPE":
-            yield {"type": "chunk", "text": "I specialize in Samsung products and services. For other topics, please consult a general AI assistant."}
+            yield {"type": "chunk", "text": "I specialize in Samsung products and services. For this topic, would you like me to conduct a web search to find more details?"}
             return
         elif intent in ["PRODUCT_INFO", "TROUBLESHOOTING", "IMAGE_ANALYSIS",
                          "VOICE_QUERY", "COMPARISON"]:
+            # Step 2b: Contextualize Query
+            effective_query = self.rewrite_query(user_query, chat_history)
+            if effective_query != user_query:
+                print(f"DEBUG: Rewritten query: '{user_query}' -> '{effective_query}'")
+
             # Use hybrid retriever
             if self.retriever:
                 result = self.retriever.retrieve(effective_query)
                 
-                # FALLBACK: If nothing found, try a simplified query
+                # FALLBACK: If nothing found, try a simplified/base query
                 if not result["is_relevant"]:
                     simplified = self._simplify_query(user_query)
-                    if simplified != user_query:
-                        print(f"DEBUG: No results for '{user_query}'. Retrying with '{simplified}'...")
+                    if simplified != user_query and simplified != effective_query:
+                        print(f"DEBUG: No results for '{effective_query}'. Retrying with '{simplified}'...")
                         result = self.retriever.retrieve(simplified)
                 
                 retrieved_context = result["context"]
@@ -204,8 +244,8 @@ Intent:"""
                             break
                 
                 # RELEVANCE CHECK: If still not relevant, ask for web search permission
-                if not is_relevant or not retrieved_context.strip():
-                    yield {"type": "chunk", "text": "I couldn't find that specific information in our local Samsung manuals. Would you like me to conduct a web search on samsung.com to find more details?"}
+                if not is_relevant:
+                    yield {"type": "chunk", "text": "I couldn't find that specific information in the local Samsung manuals. Would you like me to conduct a web search to find more details?"}
                     return
 
         elif intent == "CATEGORY_BROWSE":
@@ -226,7 +266,7 @@ Intent:"""
                     tool_used = "hybrid_retriever (fallback)"
                 
                 if not is_relevant:
-                    yield {"type": "chunk", "text": "I couldn't find any products in our local database matching that request. Should I try a web search?"}
+                    yield {"type": "chunk", "text": "I couldn't find any products in our local database matching that request. Should I try a web search for you?"}
                     return
 
         # Step 3: Build System Prompt

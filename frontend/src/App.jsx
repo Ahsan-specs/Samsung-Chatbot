@@ -63,7 +63,8 @@ function useMicRecorder({ onTranscript, onError }) {
           const formData = new FormData();
           formData.append('audio', blob, 'recording.webm');
 
-          const res = await fetch('http://localhost:8000/api/transcribe', {
+          const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+          const res = await fetch(`${API_BASE_URL}/api/transcribe`, {
             method: 'POST',
             body: formData,
           });
@@ -146,6 +147,20 @@ function App() {
     window.speechSynthesis?.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices());
   }, []);
 
+  // ── Intersection Observer for Scroll Animations ──
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   // ── Send message ──────────────────────────────────────────────────────────
   const handleSend = useCallback(async (textOverride) => {
     const text = (textOverride ?? query).trim();
@@ -161,7 +176,8 @@ function App() {
         .filter(m => !m.isIntro)
         .map(m => ({ role: m.role, content: m.content }));
 
-      const response = await fetch('http://localhost:8000/api/chat', {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+      const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query: text, history }),
@@ -313,13 +329,13 @@ function App() {
         <div className="hero-section">
           <div className="hero-background"></div>
           <div className="hero-content">
-            <h1 className="hero-title">Galaxy S25 Ultra</h1>
-            <p className="hero-subtitle">
-              The ultimate Galaxy experience. Now with next-generation capabilities powered by Galaxy AI.
+            <h1 className="hero-title reveal-item">Galaxy S26 Ultra</h1>
+            <p className="hero-subtitle reveal-item">
+              The future is here. Experience the ultimate Galaxy powered by Galaxy AI 2.0 and the world's first 3nm mobile brilliance.
             </p>
-            <div className="hero-buttons">
-              <button className="hero-btn primary" onClick={() => { setIsChatOpen(true); setQuery("Tell me about the Galaxy S25 Ultra and its AI features"); }}>Learn more</button>
-              <button className="hero-btn secondary">Buy now</button>
+            <div className="hero-buttons reveal-item">
+              <button className="hero-btn primary" onClick={() => { setIsChatOpen(true); setQuery("Tell me about the Galaxy S26 Ultra and its AI features"); }}>Discover more</button>
+              <button className="hero-btn secondary">Order now</button>
             </div>
           </div>
         </div>
@@ -329,14 +345,14 @@ function App() {
           <h2 className="section-title">Recommended for you</h2>
           <div className="product-grid">
             {/* Card 1 */}
-            <div className="product-card">
+            <div className="product-card reveal-item">
               <div className="product-image-container">
-                <img src="/images/s25_hero.png" alt="Galaxy S25 Ultra" />
+                <img src="/images/s26_closeup.png" alt="Galaxy S26 Ultra" />
               </div>
               <div className="product-info">
-                <h3>Galaxy S25 Ultra</h3>
-                <p>The new era of Galaxy AI</p>
-                <button className="buy-btn">Buy now</button>
+                <h3>Galaxy S26 Ultra</h3>
+                <p>Infinity-Space AMOLED Display</p>
+                <button className="buy-btn">Order now</button>
               </div>
             </div>
             {/* Card 2 */}
@@ -376,11 +392,11 @@ function App() {
         </section>
 
         {/* Secondary Promo Banner */}
-        <section className="secondary-promo">
-          <div className="promo-text">
-            <h2>Experience Galaxy AI</h2>
-            <p>Unlock new possibilities with intelligent tools designed for your life.</p>
-            <button className="promo-link" onClick={() => { setIsChatOpen(true); setQuery("What can Galaxy AI do?"); }}>Explore AI Features</button>
+        <section className="secondary-promo reveal-item">
+          <div className="promo-text reveal-item" style={{ position: 'relative', zIndex: 2 }}>
+            <h2>New Galaxy AI 2.0</h2>
+            <p>Intelligence that understands you better than ever. Explore the next frontier of Samsung innovation.</p>
+            <button className="promo-link" onClick={() => { setIsChatOpen(true); setQuery("What's new in Galaxy AI 2.0?"); }}>Explore Intelligence</button>
           </div>
         </section>
 
@@ -458,9 +474,9 @@ function App() {
         <div className="widget-overlay">
           <div className="app-container">
             {/* Header */}
-            <header className="header">
+            <header className="header" style={{ fontFamily: "'Outfit', sans-serif" }}>
               <span className="header-brand">
-                <Sparkles size={16} /> Galaxy AI
+                <Sparkles size={18} /> Galaxy AI
               </span>
               <div className="header-controls">
                 <button
@@ -531,7 +547,7 @@ function App() {
                     <span>GALAXY AI IS THINKING…</span>
                   </div>
                   <div className="bot-card loading-card">
-                    <Loader2 className="animate-spin" size={24} color="#1c52ec" />
+                    {/* Shimmer animation handled by CSS */}
                   </div>
                 </div>
               )}

@@ -508,12 +508,12 @@ for msg in st.session_state.messages:
                 <div class="meta-row">Confidence: <strong>{meta.get('confidence', 'N/A')}</strong></div>
                 <div class="conf-bar"><div class="conf-fill {conf_class}" style="width:{conf_value}%"></div></div>
             """
-            sources = meta.get("sources", [])
-            if sources:
-                meta_html += '<div style="margin-top:6px;">'
-                for src in sources[:5]:
-                    meta_html += f'<span class="src-tag">{src}</span>'
-                meta_html += '</div>'
+            # sources = meta.get("sources", [])
+            # if sources:
+            #     meta_html += '<div style="margin-top:6px;">'
+            #     for src in sources[:5]:
+            #         meta_html += f'<span class="src-tag">{src}</span>'
+            #     meta_html += '</div>'
             meta_html += "</div>"
             st.markdown(meta_html, unsafe_allow_html=True)
 
@@ -725,11 +725,11 @@ if final_input:
         </div>
     """
     
-    if sources:
-        meta_html += '<div style="margin-top:6px;">'
-        for src in sources[:5]:
-            meta_html += f'<span class="src-tag">{src}</span>'
-        meta_html += '</div>'
+    # if sources:
+    #     meta_html += '<div style="margin-top:6px;">'
+    #     for src in sources[:5]:
+    #         meta_html += f'<span class="src-tag">{src}</span>'
+    #     meta_html += '</div>'
 
     if not is_relevant and intent not in ["GREETING", "OUT_OF_SCOPE"]:
         meta_html += '<div class="meta-row" style="color:var(--red);margin-top:4px;">No matching content in knowledge base</div>'

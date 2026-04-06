@@ -17,3 +17,6 @@ requests
 beautifulsoup4
 torchvision
 cerebras-cloud-sdk
+uvicorn
+gunicorn
+gdown

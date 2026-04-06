@@ -131,25 +131,16 @@ class HybridRetriever:
         sources_set = set()
         context_parts = []
 
-        context_parts.append("═══ RETRIEVED CONTEXT (Vector Search) ═══")
         for i, chunk in enumerate(retrieved_chunks, 1):
             source_label = f"{chunk['source']} ({chunk['category']})"
             sources_set.add(source_label)
-            context_parts.append(
-                f"\n[Source {i}: {source_label} | Similarity: {chunk['similarity']:.2f}]\n"
-                f"{chunk['text']}"
-            )
+            context_parts.append(chunk['text'])
 
         if expanded_chunks:
-            context_parts.append("\n═══ EXPANDED CONTEXT (GraphRAG) ═══")
             for i, chunk in enumerate(expanded_chunks, 1):
                 source_label = f"{chunk['source']} ({chunk['category']})"
                 sources_set.add(source_label)
-                expansion = chunk.get("expansion_source", "graph")
-                context_parts.append(
-                    f"\n[Graph Source {i}: {source_label} | via {expansion}]\n"
-                    f"{chunk['text']}"
-                )
+                context_parts.append(chunk['text'])
 
         result["context"] = "\n".join(context_parts)
         result["sources"] = sorted(list(sources_set))
@@ -201,10 +192,7 @@ class HybridRetriever:
             if chunk["metadata"].get("category", "").lower() == category.lower():
                 source_label = f"{chunk['metadata'].get('source', 'Unknown')} ({category})"
                 sources_set.add(source_label)
-                context_parts.append(
-                    f"\n[Source {chunks_used+1}: {source_label} | Score: {similarity:.2f}]\n"
-                    f"{chunk['text']}"
-                )
+                context_parts.append(chunk['text'])
                 chunks_used += 1
 
         return {
